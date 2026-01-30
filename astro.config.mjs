@@ -7,7 +7,8 @@ const DEV_URL = 'http://localhost:4321'
 const LIVE_BASE_PATH = '/bq-verde-documentation'
 const DEV_BASE_PATH = '/'
 
-const isGitHubPages = process.env.BUILD_TARGET === 'gh-pages';
+// const isGitHubPages = process.env.BUILD_TARGET === 'gh-pages';
+const isGitHubPages = true 
 const SITE_URL = isGitHubPages ? LIVE_URL : DEV_URL
 const BASE_PATH = isGitHubPages ? LIVE_BASE_PATH : DEV_BASE_PATH
 
