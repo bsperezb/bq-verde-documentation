@@ -1,0 +1,147 @@
+---
+title: Estilos y Diseño
+description: Sistema de diseño, tokens y estilos.
+---
+
+## Sistema de Diseño
+
+### Tokens de Diseño (`src/styles/tokens.css`)
+
+```css
+:root {
+  /* Colores principales */
+  --color-primary: #279b48;
+  --color-secondary: #1a7535;
+  --color-accent: #34c759;
+
+  /* Colores de fondo */
+  --bg-light: #f8f9fa;
+  --bg-white: #ffffff;
+
+  /* Tipografía */
+  --font-primary: "Volkswagen Serial Light", sans-serif;
+  --font-heading: "Volkswagen Serial Heavy", sans-serif;
+
+  /* Espaciado */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+
+  /* Breakpoints */
+  --bp-mobile: 768px;
+  --bp-tablet: 1024px;
+  --bp-desktop: 1440px;
+}
+```
+
+## Fuentes Personalizadas
+
+**Volkswagen Serial** - Familia tipográfica principal
+
+Ubicación: `/public/fonts/`
+
+- `volkswagen-serial-light-regular.ttf`
+- `VolkswagenSerialHeavyRegular.ttf`
+
+## Estilos Globales (`src/styles/global.css`)
+
+```css
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  color: #333;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+```
+
+## Estilos por Categoría ICAU
+
+Cada categoría ICAU tiene estilos personalizados:
+
+- `icaus-agua.css` - Temática azul para agua
+- `icaus-aire.css` - Temática celeste para aire
+- `icaus-fauna.css` - Temática verde oscuro para fauna
+- `icaus-flora.css` - Temática verde brillante para flora
+- `icaus-suelo.css` - Temática marrón para suelo
+- `icaus-respel.css` - Temática naranja/rojo para residuos
+
+## Utilidades CSS (`src/styles/utilities.css`)
+
+Clases de utilidad para desarrollo rápido:
+
+```css
+/* Espaciado */
+.mt-1 {
+  margin-top: var(--space-xs);
+}
+.mb-2 {
+  margin-bottom: var(--space-sm);
+}
+.p-3 {
+  padding: var(--space-md);
+}
+
+/* Flexbox */
+.flex {
+  display: flex;
+}
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-column {
+  flex-direction: column;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+}
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Visibilidad */
+.hidden {
+  display: none;
+}
+.mobile-only {
+  display: block;
+}
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+}
+```
+
+## Diseño Responsivo
+
+**Breakpoints:**
+
+- Mobile: < 768px
+- Tablet: 768px - 1024px
+- Desktop: > 1024px
+
+**Estrategia:** Mobile-first design

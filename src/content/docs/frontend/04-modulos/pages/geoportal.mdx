@@ -1,0 +1,57 @@
+---
+title: Geoportal (Mapas)
+description: Documentación del módulo de mapas interactivos.
+---
+
+**Ruta:** `/maps`  
+**Archivo:** `src/pages/maps.astro`  
+**Layout:** `Layout.astro`
+
+## Descripción
+
+Sistema de mapas interactivos que visualiza las estaciones de monitoreo ambiental de Barranquilla, permitiendo consultar información en tiempo real de cada estación.
+
+## Funcionalidad
+
+- Mapa interactivo con Leaflet
+- Marcadores de estaciones de monitoreo
+- Popup con información de cada estación
+- Filtros por tipo de estación
+- Visualización de datos en tiempo real
+
+## Integración con Leaflet
+
+```javascript
+const map = L.map("map").setView([10.9685, -74.7813], 12);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors",
+}).addTo(map);
+
+// Agregar marcadores de estaciones
+stations.forEach((station) => {
+  L.marker([station.lat, station.lon])
+    .bindPopup(`<b>${station.name}</b>`)
+    .addTo(map);
+});
+```
+
+## Características del Mapa
+
+- **Centro inicial:** Barranquilla (10.9685°N, 74.7813°W)
+- **Zoom inicial:** 12
+- **Proveedor de tiles:** OpenStreetMap
+- **Marcadores personalizados** por tipo de estación
+- **Popups informativos** con datos de la estación
+
+## Tipos de Estaciones
+
+- Estaciones de calidad del aire
+- Estaciones meteorológicas
+- Estaciones de ruido
+- Otros sensores ambientales
+
+## Componentes Utilizados
+
+- `MapComponent` - Componente principal del mapa
+- Integración con servicio `stationsService.js`

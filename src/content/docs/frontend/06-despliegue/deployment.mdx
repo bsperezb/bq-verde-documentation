@@ -1,0 +1,273 @@
+---
+title: Despliegue
+description: Guía de despliegue con Docker, Nginx y manual.
+---
+
+## Docker
+
+### Dockerfile
+
+```dockerfile
+FROM node:18-alpine AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+FROM node:18-alpine AS runtime
+
+WORKDIR /app
+
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY package*.json ./
+
+ENV HOST=0.0.0.0
+ENV PORT=4321
+
+EXPOSE 4321
+
+CMD ["node", "./dist/server/entry.mjs"]
+```
+
+### Construcción
+
+```bash
+docker build -t baq-verde-frontend .
+```
+
+### Ejecución
+
+```bash
+docker run -d \
+  --name baq-verde-web \
+  -p 4321:4321 \
+  -e PUBLIC_URL_SERVER=<PUBLIC_URL_SERVER> \
+  baq-verde-frontend
+```
+
+## Docker Compose
+
+```yaml
+version: "3.8"
+
+services:
+  frontend:
+    build: .
+    container_name: baq-verde-frontend
+    ports:
+      - "4321:4321"
+    environment:
+      - PUBLIC_URL_SERVER=<PUBLIC_URL_SERVER>
+      - HOST=0.0.0.0
+      - PORT=4321
+    restart: unless-stopped
+```
+
+**Comandos:**
+
+```bash
+# Iniciar servicios
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f
+
+# Detener servicios
+docker-compose down
+```
+
+## Despliegue Manual
+
+### 1. Instalación de Dependencias
+
+```bash
+npm install
+```
+
+### 2. Construcción para Producción
+
+```bash
+npm run build
+```
+
+Esto genera la carpeta `dist/` con:
+
+- **dist/client/** - Archivos estáticos (CSS, JS, imágenes)
+- **dist/server/** - Servidor SSR (entry.mjs)
+
+### 3. Iniciar Servidor
+
+```bash
+node ./dist/server/entry.mjs
+```
+
+### Variables de Entorno en Producción
+
+```env
+PUBLIC_URL_SERVER=<PUBLIC_URL_SERVER>
+HOST=0.0.0.0
+PORT=4321
+NODE_ENV=production
+```
+
+## Nginx (Proxy Inverso)
+
+### Configuración Recomendada
+
+```nginx
+server {
+    listen 80;
+    server_name observatorio.barranquillaverde.gov.co;
+
+    # Redirigir a HTTPS
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name observatorio.barranquillaverde.gov.co;
+
+    # Certificados SSL
+    ssl_certificate /etc/ssl/certs/observatorio.crt;
+    ssl_certificate_key /etc/ssl/private/observatorio.key;
+
+    # Configuración SSL moderna
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    # Proxy a la aplicación Astro
+    location / {
+        proxy_pass http://localhost:4321;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Archivos estáticos con caché
+    location /_astro/ {
+        proxy_pass http://localhost:4321;
+        proxy_cache_valid 200 1y;
+        add_header Cache-Control "public, immutable";
+        expires 1y;
+    }
+
+    # Seguridad headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+}
+```
+
+### Habilitar Configuración
+
+```bash
+# Crear enlace simbólico
+sudo ln -s /etc/nginx/sites-available/observatorio /etc/nginx/sites-enabled/
+
+# Verificar configuración
+sudo nginx -t
+
+# Recargar Nginx
+sudo systemctl reload nginx
+```
+
+## Systemd Service
+
+### Archivo de Servicio
+
+```ini
+[Unit]
+Description=BAQ Verde Frontend - Observatorio Ambiental
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/baq-verde-frontend
+Environment="PUBLIC_URL_SERVER=<PUBLIC_URL_SERVER>"
+Environment="HOST=0.0.0.0"
+Environment="PORT=4321"
+Environment="NODE_ENV=production"
+ExecStart=/usr/bin/node ./dist/server/entry.mjs
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=baq-verde-frontend
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Gestión del Servicio
+
+```bash
+# Copiar archivo de servicio
+sudo cp baq-verde-frontend.service /etc/systemd/system/
+
+# Recargar systemd
+sudo systemctl daemon-reload
+
+# Habilitar inicio automático
+sudo systemctl enable baq-verde-frontend
+
+# Iniciar servicio
+sudo systemctl start baq-verde-frontend
+
+# Ver estado
+sudo systemctl status baq-verde-frontend
+
+# Ver logs
+sudo journalctl -u baq-verde-frontend -f
+```
+
+## Plataformas Cloud
+
+### DigitalOcean App Platform
+
+1. **Conectar repositorio GitHub**
+2. **Configurar build:**
+   - Build Command: `npm run build`
+   - Run Command: `node ./dist/server/entry.mjs`
+3. **Variables de entorno:**
+   - `PUBLIC_URL_SERVER`
+   - `PORT=4321`
+4. **Deploy automático en cada push**
+
+### Vercel
+
+```bash
+# Instalar Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel --prod
+```
+
+### Netlify
+
+No recomendado para SSR, solo para sitios estáticos.
+
+## Checklist de Despliegue
+
+- ✅ Variables de entorno configuradas
+- ✅ Build de producción generado
+- ✅ Certificado SSL instalado
+- ✅ Nginx configurado como proxy inverso
+- ✅ Servicio systemd habilitado
+- ✅ Logs monitoreados
+- ✅ Backup de configuración
+- ✅ Dominio DNS configurado

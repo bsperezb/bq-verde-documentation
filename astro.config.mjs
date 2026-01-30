@@ -6,20 +6,29 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'My Docs',
+			title: 'Obserbatorio Ambiental',
+			logo:{
+				src: './src/assets/logo_bq_verde.png',
+				replacesTitle: true
+			},
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
 			sidebar: [
 				{
-					label: 'Guides',
+					label: 'Introducción',
 					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],
+						{ label: 'Introducción', slug: 'introduction' },
+					]
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'App Frontend',
+					autogenerate: { directory: 'frontend' },
+					collapsed: true
 				},
+				{
+					label: 'App Backend',
+					autogenerate: { directory: 'backend' },
+					collapsed: true
+				}
 			],
 		}),
 	],

@@ -1,0 +1,58 @@
+---
+title: Documentos
+description: Documentación del módulo de gestión de documentos.
+---
+
+**Ruta:** `/documents`  
+**Archivo:** `src/pages/documents.astro`  
+**Layout:** `Layout.astro`
+
+## Descripción
+
+Sistema de gestión y visualización de documentos técnicos, estudios, informes y publicaciones relacionadas con el medio ambiente de Barranquilla.
+
+## Funcionalidad
+
+- Listado de documentos técnicos
+- Filtros por categoría
+- Descarga de PDFs, Excel y otros formatos
+- Información del autor y fecha de publicación
+- Búsqueda por título
+
+## Características
+
+### Tipos de Documentos
+
+- Estudios ambientales
+- Informes técnicos
+- Planes de acción
+- Normativas y regulaciones
+- Publicaciones científicas
+
+### Metadatos del Documento
+
+```typescript
+interface Document {
+  id: string;
+  title: string;
+  category: string;
+  author: string;
+  publishDate: string;
+  fileUrl: string;
+  fileType: 'pdf' | 'excel' | 'word' | 'other';
+  description?: string;
+}
+```
+
+### Sistema de Filtrado
+
+- Filtro por categoría
+- Filtro por tipo de archivo
+- Búsqueda por texto en título
+- Ordenamiento por fecha
+
+## Componentes Utilizados
+
+- `DocumentCard` - Tarjeta de documento individual
+- `SearchBar` - Barra de búsqueda
+- `CategoryFilter` - Filtros de categoría

@@ -1,0 +1,121 @@
+---
+title: Performance y Accesibilidad
+description: Estándares de rendimiento y pautas de accesibilidad.
+---
+
+## Optimización de Performance
+
+### Técnicas Implementadas
+
+1. **Lazy Loading de Imágenes**
+
+   ```html
+   <img loading="lazy" />
+   ```
+
+2. **Preload de Recursos Críticos**
+
+   ```html
+   <link rel="preload" href="/fonts/font.ttf" as="font" />
+   ```
+
+3. **Code Splitting**
+   - Astro divide automáticamente el código por ruta
+   - Cada página solo carga el JavaScript necesario
+
+4. **Optimización de Imágenes**
+   - WebP para navegadores modernos
+   - Fallback a JPG/PNG para compatibilidad
+   - Dimensiones responsivas
+
+5. **Caché de Assets**
+   - Headers de caché en archivos estáticos
+   - Versionado de assets para cache busting
+
+6. **Minimización de CSS/JS**
+   - Build automático minimiza archivos
+   - Eliminación de código no utilizado
+
+### Métricas de Performance (Core Web Vitals)
+
+**Objetivos:**
+
+| Métrica | Objetivo | Descripción |
+|---------|----------|-------------|
+| **LCP** | < 2.5s | Largest Contentful Paint - Tiempo de carga del elemento principal |
+| **FID** | < 100ms | First Input Delay - Tiempo de respuesta a primera interacción |
+| **CLS** | < 0.1 | Cumulative Layout Shift - Estabilidad visual durante carga |
+
+### Herramientas de Medición
+
+- **Lighthouse** - Auditoría de performance
+- **WebPageTest** - Análisis detallado de carga
+- **Chrome DevTools** - Debugging y profiling
+
+## Accesibilidad
+
+### Principios de Accesibilidad (WCAG 2.1)
+
+1. **Semántica HTML correcta**
+   - Uso de elementos semánticos: `<header>`, `<nav>`, `<main>`, `<footer>`, `<article>`, `<section>`
+   - Encabezados jerárquicos correctos (`h1` → `h6`)
+   - Listas estructuradas con `<ul>`, `<ol>`, `<li>`
+
+2. **Etiquetas ARIA**
+
+   ```html
+   <button aria-label="Menú de navegación" id="hamburger">
+     <span aria-hidden="true">☰</span>
+   </button>
+   
+   <nav aria-label="Navegación principal">
+     <!-- Enlaces -->
+   </nav>
+   ```
+
+3. **Contraste de colores**
+   
+   | Tipo de Texto | Ratio Mínimo |
+   |---------------|--------------|
+   | Texto normal | 4.5:1 |
+   | Texto grande (18pt+) | 3:1 |
+   | Elementos UI | 3:1 |
+
+4. **Navegación por teclado**
+   - **Tab** - Navegar entre elementos interactivos
+   - **Enter/Space** - Activar botones y enlaces
+   - **ESC** - Cerrar modales y overlays
+   - **Arrow keys** - Navegación en menús y carruseles
+
+5. **Textos alternativos**
+   ```html
+   <!-- ✅ Correcto -->
+   <img src="estacion-monitoreo.jpg" alt="Estación de monitoreo de calidad del aire en el centro de Barranquilla" />
+   
+   <!-- ❌ Incorrecto -->
+   <img src="estacion-monitoreo.jpg" alt="imagen" />
+   ```
+
+6. **Formularios accesibles**
+   ```html
+   <label for="nombre">Nombre completo:</label>
+   <input 
+     id="nombre" 
+     type="text" 
+     required 
+     aria-required="true"
+     aria-describedby="nombre-help"
+   />
+   <span id="nombre-help">Ingrese su nombre y apellido</span>
+   ```
+
+### Checklist de Accesibilidad
+
+- ✅ Todo contenido navegable por teclado
+- ✅ Contraste adecuado en todos los textos
+- ✅ Imágenes con alt descriptivo
+- ✅ Formularios con labels asociados
+- ✅ Estados de foco visibles
+- ✅ Landmarks ARIA correctos
+- ✅ Contenido responsive y legible
+- ✅ Sin dependencia solo de color para información

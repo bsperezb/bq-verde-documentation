@@ -1,0 +1,50 @@
+---
+title: Arquitectura
+description: Arquitectura del proyecto BAQ Verde Frontend.
+---
+
+## Patrón de Diseño
+
+El proyecto utiliza la arquitectura **Islands** de Astro con SSR:
+
+```text
+Frontend (Astro SSR)
+├── Server-Side Rendering
+├── Static Site Generation (para contenido)
+├── Interactive Islands (componentes dinámicos)
+└── API Integration (Backend FastAPI)
+```
+
+## Características Técnicas
+
+- **SSR (Server-Side Rendering)** con Astro
+- **Adaptador Node.js** en modo standalone
+- **Generación de contenido** desde colecciones Markdown
+- **Componentes interactivos** con vanilla JavaScript
+- **Mapas interactivos** con Leaflet
+- **Diseño responsivo** con CSS personalizado
+- **Integración API REST** con backend FastAPI
+- **Middleware** para autenticación
+
+## Flujo de Datos
+
+```mermaid
+graph LR
+    User[Usuario] --> Astro[Astro SSR]
+    Astro --> Components[Componentes]
+    Components --> API[API Service]
+    API --> Backend[Backend FastAPI]
+    Backend --> DB[MongoDB]
+    
+    Markdown[Contenido Estático] --> Astro
+    
+    subgraph Frontend
+    Astro
+    Components
+    Markdown
+    end
+```
+
+```text
+Renderizado Híbrido (SSR + CSR)
+```

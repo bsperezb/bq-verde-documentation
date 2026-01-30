@@ -1,0 +1,167 @@
+---
+title: Flujo de Trabajo
+description: Guía de desarrollo, debugging y scripts.
+---
+
+## Scripts NPM
+
+Comandos disponibles en `package.json`:
+
+```json
+{
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "format": "prettier --write ."
+  }
+}
+```
+
+### Uso de Scripts
+
+#### Desarrollo Local
+
+```bash
+npm run dev
+```
+
+Inicia servidor de desarrollo en http://localhost:4321 con hot reload.
+
+#### Construcción para Producción
+
+```bash
+npm run build
+```
+
+Genera build optimizado en carpeta `dist/`.
+
+#### Vista Previa de Producción
+
+```bash
+npm run preview
+```
+
+Inicia servidor de vista previa del build de producción.
+
+#### Formatear Código
+
+```bash
+npm run format
+```
+
+Formatea todo el código con Prettier.
+
+#### Comandos Astro
+
+```bash
+npm run astro -- --help
+```
+
+Accede a comandos CLI de Astro.
+
+## Desarrollo Local (Setup)
+
+1. **Clonar repositorio**
+
+   ```bash
+   git clone <repository-url>
+   cd baq-verde-frontend
+   ```
+
+2. **Instalar dependencias**
+
+   ```bash
+   npm install
+   ```
+
+3. **Configurar variables de entorno**
+
+   ```bash
+   cp .env.example .env
+   # Editar .env con valores locales
+   ```
+
+4. **Iniciar desarrollo**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Acceder a la aplicación**
+   ```
+   http://localhost:4321
+   ```
+
+## Agregar Nueva Página
+
+1. **Crear archivo en `src/pages/`**
+
+   ```astro
+   ---
+   import Layout from '../layouts/Layout.astro';
+   ---
+
+   <Layout title="Nueva Página">
+     <h1>Contenido de la página</h1>
+   </Layout>
+   ```
+
+2. **Agregar enlace en navegación**
+   ```astro
+   <nav class="nav">
+     <a href="/nueva-pagina">Nueva Página</a>
+   </nav>
+   ```
+
+## Agregar Nuevo Componente
+
+1. **Crear archivo en `src/components/`**
+
+   ```astro
+   ---
+   interface Props {
+     title: string;
+     description?: string;
+   }
+
+   const { title, description } = Astro.props;
+   ---
+
+   <div class="component">
+     <h2>{title}</h2>
+     {description && <p>{description}</p>}
+   </div>
+
+   <style>
+     .component {
+       /* estilos */
+     }
+   </style>
+   ```
+
+2. **Usar en páginas**
+
+   ```astro
+   ---
+   import MiComponente from '../components/MiComponente.astro';
+   ---
+
+   <MiComponente title="Título" description="Descripción" />
+   ```
+
+## Debugging
+
+### Logs en Desarrollo
+
+```javascript
+console.log("Debug info:", data);
+```
+
+### Astro Dev Toolbar
+
+Astro incluye una toolbar de desarrollo con:
+
+- Inspector de componentes
+- Auditoría de accesibilidad

@@ -1,0 +1,64 @@
+---
+title: Página Principal (Home)
+description: Documentación de la página principal con filtros e indicadores.
+---
+
+**Ruta:** `/`  
+**Archivo:** `src/pages/index.astro`  
+**Layout:** `LayoutHome.astro`
+
+## Descripción
+
+La página principal del Observatorio Ambiental presenta una vista general de los indicadores ambientales de la ciudad, con un sistema de filtrado interactivo y navegación por categorías.
+
+## Funcionalidad
+
+- Sección de bienvenida (TitleSection)
+- Filtros de categorías ambientales
+- Carrusel de indicadores con navegación
+- Sistema de filtrado dinámico por categoría
+- Tarjetas interactivas con navegación a detalles
+
+## Categorías de Indicadores
+
+- **Fauna** - Indicadores de biodiversidad animal
+- **Flora** - Indicadores de vegetación urbana
+- **Aire** - Calidad del aire y contaminación
+- **Agua** - Calidad y consumo de agua
+- **Suelo** - Indicadores de calidad del suelo
+- **Residuos** - Gestión de residuos (con subcategoría RESPEL)
+- **Ordenamiento Territorial** - Indicadores urbanísticos
+
+## Interactividad
+
+### Filtrado por Categoría
+
+```javascript
+filterRoot.addEventListener("filter-change", (e) => {
+  const selected = e.detail;
+  const filtered = ALL_INDICATORS.filter((item) => item.category === selected);
+  renderFilteredIndicators(filtered);
+});
+```
+
+### Navegación del Carrusel
+
+Sistema de carrusel personalizado con:
+- Navegación con flechas
+- Scroll suave
+- Centrado automático
+- Responsive
+- Touch events en móvil
+
+### Modal de RESPEL
+
+Modal especial para la subcategoría de Residuos Peligrosos (RESPEL):
+- Botón "Volver" para regresar a categoría principal
+- Filtrado específico de indicadores RESPEL
+
+## Componentes Utilizados
+
+- `TitleSection` - Sección de bienvenida
+- `NavFilters` - Filtros de categorías
+- `IndicatorsCarousel` - Carrusel de indicadores
+- `IndicatorCard` - Tarjetas de indicadores individuales

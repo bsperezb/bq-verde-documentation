@@ -1,0 +1,147 @@
+---
+title: Características Especiales
+description: Funcionalidades especiales y lógica clave del negocio.
+---
+
+## 1. Sistema de Contenido Markdown
+
+El proyecto utiliza las **Colecciones de Contenido** de Astro para gestionar contenido estructurado en Markdown.
+
+**Ubicación:** `src/content/icau/`
+
+**Configuración:** `src/content/config.ts`
+
+```typescript
+import { defineCollection, z } from "astro:content";
+
+const icauCollection = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    category: z.string(),
+    icon: z.string(),
+    publishedDate: z.date(),
+  }),
+});
+
+export const collections = {
+  icau: icauCollection,
+};
+```
+
+**Uso en páginas:**
+
+```astro
+---
+import { getCollection } from 'astro:content';
+
+const icauEntries = await getCollection('icau');
+---
+```
+
+## 2. Generación de Rutas Dinámicas
+
+**Archivo:** `src/pages/ICAU/[slug].astro`
+
+```astro
+---
+export async function getStaticPaths() {
+  const icauEntries = await getCollection('icau');
+
+  return icauEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<Layout>
+  <Content />
+</Layout>
+```
+
+## 3. Filtrado Interactivo sin Recarga
+
+El home implementa filtrado de indicadores sin recargar la página:
+
+```javascript
+filterRoot.addEventListener("filter-change", (e) => {
+  const selected = e.detail;
+  const filtered = ALL_INDICATORS.filter((item) => item.category === selected);
+  renderFilteredIndicators(filtered);
+});
+```
+
+## 4. Carrusel de Indicadores
+
+Sistema de carrusel personalizado sin librerías externas:
+
+- Navegación con botones
+- Scroll suave
+- Centrado automático
+- Responsive
+- Touch events en móvil
+
+## 5. Mapas Interactivos con Leaflet
+
+Integración de Leaflet para visualización geoespacial:
+
+```javascript
+const map = L.map("map").setView([10.9685, -74.7813], 12);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors",
+}).addTo(map);
+
+// Agregar marcadores de estaciones
+stations.forEach((station) => {
+  L.marker([station.lat, station.lon])
+    .bindPopup(`<b>${station.name}</b>`)
+    .addTo(map);
+});
+```
+
+## 6. Gestión de Estado en Cliente
+
+Uso de eventos personalizados para comunicación entre componentes:
+
+```javascript
+// Emitir evento
+const event = new CustomEvent("filter-change", {
+  detail: selectedCategory,
+});
+element.dispatchEvent(event);
+
+// Escuchar evento
+element.addEventListener("filter-change", (e) => {
+  console.log("Filtro cambiado:", e.detail);
+});
+```
+
+## 7. Middleware de Autenticación
+
+Archivo: `src/middleware.js`
+
+```javascript
+export function onRequest({ locals, request, cookies }, next) {
+  // Verificar token de autenticación
+  const token = cookies.get("token")?.value;
+
+  // Rutas protegidas
+  const protectedRoutes = ["/dashboard"];
+
+  if (protectedRoutes.some((route) => request.url.includes(route))) {
+    if (!token) {
+      return Response.redirect(new URL("/login", request.url));
+    }
+  }
+
+  // Agregar token a locals para uso en páginas
+  locals.token = token;
+
+  return next();
+}
+```

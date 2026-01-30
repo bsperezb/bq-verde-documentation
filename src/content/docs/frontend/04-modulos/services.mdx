@@ -1,0 +1,97 @@
+---
+title: Servicios y API
+description: Documentación de los servicios para consumir la API.
+---
+
+## Cliente API Base (`src/lib/api.js`)
+
+Función genérica para llamadas a la API:
+
+```javascript
+export async function api(url, token, options = {}) {
+  const headers = new Headers(options.headers || {});
+
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  if (!(options.body instanceof FormData)) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  const response = await fetch(API_BASE + url, {
+    ...options,
+    headers,
+  });
+
+  // Manejo de errores
+  if (!response.ok) {
+    // Extrae mensaje de error detallado
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+}
+```
+
+**Características:**
+
+- Autenticación JWT automática
+- Manejo de errores detallado
+- Soporte para FormData
+- Headers configurables
+
+## Servicio de Estaciones (`src/lib/stationsService.js`)
+
+```javascript
+export async function getStations(token) {
+  return api("/stations", token);
+}
+
+export async function getStation(id, token) {
+  return api(`/stations/${id}`, token);
+}
+```
+
+## Servicio de Indicadores (`src/lib/indicatorsService.js`)
+
+```javascript
+export async function getIcau(token) {
+  return api("/icau", token);
+}
+
+export async function getStationData(stationId, token) {
+  return api(`/station-data/${stationId}`, token);
+}
+```
+
+## Servicio de Contenidos (`src/lib/contentservice.js`)
+
+```javascript
+export async function getContenidos(token) {
+  return api("/contenidos", token);
+}
+
+export async function getContenidosBySubcategory(subcatId, token) {
+  return api(`/contenidos/by-subcategory/${subcatId}`, token);
+}
+
+export async function createContenido(data, token) {
+  return api("/contenidos", token, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+```
+
+## Servicio de Subcategorías (`src/lib/subcategoryservice.js`)
+
+```javascript
+export async function getSubcategories(token) {
+  return api("/icau_subcategories", token);
+}
+
+export async function getSubcategoriesByIcau(icauId, token) {
+  return api(`/icau_subcategories/by-icau/${icauId}`, token);
+}
+```

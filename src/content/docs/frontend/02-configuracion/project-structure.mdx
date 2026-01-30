@@ -1,0 +1,95 @@
+---
+title: Estructura del Proyecto
+description: Estructura de archivos y directorios del proyecto.
+---
+
+import { FileTree } from '@astrojs/starlight/components';
+
+<FileTree>
+
+- baq-verde-frontend/
+  - src/
+    - components/           # Componentes reutilizables
+      - ambiental_cards/  # Tarjetas de indicadores
+      - charts/           # Componentes de gráficos
+      - common/           # Componentes comunes
+      - document_sections/ # Secciones de documentos
+      - home_sections/    # Secciones del home
+      - maps/             # Componentes de mapas
+      - notice_sections/  # Secciones de noticias
+      - participations_sections/ # Participación
+    - content/              # Contenido estático
+      - config.ts         # Configuración de colecciones
+      - icau/             # Contenido ICAU en Markdown
+    - data/                 # Datos estáticos
+      - categories.js     # Categorías de indicadores
+      - indicatorsConfig.js # Configuración de indicadores
+    - layouts/              # Layouts principales
+      - DashboardLayout.astro  # Layout del dashboard
+      - Layout.astro      # Layout general
+      - LayoutHome.astro  # Layout del home
+      - LayoutICAU.astro  # Layout para páginas ICAU
+    - lib/                  # Servicios y utilidades
+      - api.js            # Cliente API genérico
+      - contentservice.js # Servicio de contenidos
+      - indicatorsService.js # Servicio de indicadores
+      - indicatorsService.server.js # SSR indicators
+      - stationsService.js # Servicio de estaciones
+      - subcategoryservice.js # Servicio subcategorías
+    - pages/                # Páginas de la aplicación
+      - ICAU/             # Páginas de indicadores ICAU
+        - [slug].astro  # Página dinámica ICAU
+        - agua/         # Indicadores de agua
+        - aire/         # Indicadores de aire
+        - fauna/        # Indicadores de fauna
+        - flora/        # Indicadores de flora
+        - ordenamiento/ # Ordenamiento territorial
+        - respel/       # Residuos peligrosos
+        - suelo/        # Indicadores de suelo
+      - categorias/       # Páginas de categorías
+      - dashboard/        # Dashboard administrativo
+        - document/     # Gestión de documentos
+        - indicators/   # Gestión de indicadores
+        - news/         # Gestión de noticias
+        - stake/        # Gestión de estaciones
+        - stations/     # Gestión de estaciones
+      - news/             # Páginas de noticias
+      - participations/   # Participación ciudadana
+      - 404.astro         # Página de error 404
+      - documents.astro   # Página de documentos
+      - index.astro       # Página principal
+      - login.astro       # Página de inicio de sesión
+      - maps.astro        # Geoportal
+      - news.astro        # Listado de noticias
+      - participation.astro # Educación ambiental
+    - styles/               # Estilos CSS
+      - common/           # Estilos comunes
+      - carousel.css      # Estilos del carrusel
+      - fonts.css         # Fuentes tipográficas
+      - global.css        # Estilos globales
+      - icau-*.css        # Estilos específicos ICAU
+      - layout.css        # Estilos del layout
+      - layout-icau.css   # Layout específico ICAU
+      - participation-page.css # Estilos participación
+      - tokens.css        # Tokens de diseño
+      - utilities.css     # Utilidades CSS
+    - utils/                # Utilidades JavaScript
+      - slugify.js        # Generación de slugs
+    - middleware.js         # Middleware de autenticación
+  - public/                   # Archivos estáticos
+    - fonts/                # Fuentes personalizadas
+    - icons/                # Iconos SVG
+    - images/               # Imágenes
+      - bg/               # Fondos
+      - svg/              # SVG decorativos
+    - scripts/              # Scripts externos
+  - .env                      # Variables de entorno
+  - .gitignore
+  - .prettierrc               # Configuración Prettier
+  - astro.config.mjs          # Configuración de Astro
+  - Dockerfile                # Contenedor Docker
+  - package.json              # Dependencias NPM
+  - README.md
+  - tsconfig.json             # Configuración TypeScript
+
+</FileTree>

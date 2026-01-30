@@ -1,0 +1,74 @@
+---
+title: Layouts
+description: Descripción de las plantillas principales (layouts) del proyecto.
+---
+
+El proyecto utiliza 4 layouts principales:
+
+## 1. Layout.astro (General)
+
+**Uso:** Páginas de categorías, documentos, educación ambiental
+
+**Características:**
+
+- Barras informativas superiores (GOV.CO, Alcaldía)
+- Navegación principal sticky con logo
+- Hero section con imagen dinámica según ruta
+- Footer institucional con enlaces y redes sociales
+- Menú hamburguesa responsive
+
+**Estructura:**
+
+```astro
+<Layout title="Título de la página">
+  <slot /> <!-- Contenido de la página -->
+</Layout>
+```
+
+**Navegación:**
+
+- Inicio
+- Educación Ambiental
+- GeoPortal
+- Documentos
+
+**Fondos dinámicos:**
+
+- `/participation` → educacion.png
+- `/maps` → geoportal.png
+- Otros → fondolayout1.jpg o fondolayout2.jpg (aleatorio)
+
+## 2. LayoutHome.astro
+
+**Uso:** Página principal (index)
+
+**Características:**
+
+- Hero destacado con carrusel de noticias
+- Sección de indicadores ambientales con filtros
+- Decoraciones temáticas (hojas, elementos naturales)
+- Diseño optimizado para conversión
+
+## 3. LayoutICAU.astro
+
+**Uso:** Páginas de indicadores ICAU
+
+**Características:**
+
+- Navegación contextual por categoría
+- Breadcrumbs para ubicación
+- Sidebar con enlaces relacionados
+- Visualización de datos y gráficos
+- Estilos específicos por categoría ICAU
+
+## 4. DashboardLayout.astro
+
+**Uso:** Panel de administración
+
+**Características:**
+
+- Sidebar de navegación administrativa
+- Protección por autenticación
+- Gestión de contenidos
+- Formularios CRUD
+- Tablas de datos

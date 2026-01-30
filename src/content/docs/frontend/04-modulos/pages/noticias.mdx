@@ -1,0 +1,70 @@
+---
+title: Noticias
+description: Documentación del módulo de noticias ambientales.
+---
+
+**Ruta:** `/news`  
+**Archivo:** `src/pages/news.astro`  
+**Layout:** `Layout.astro`
+
+## Descripción
+
+Sistema de publicación y visualización de noticias relacionadas con el medio ambiente, actividades del observatorio y eventos relevantes de la ciudad.
+
+## Funcionalidad
+
+- Listado de noticias ambientales
+- Categorías de noticias
+- Búsqueda por texto
+- Sistema de paginación
+- Vista detallada de noticia individual
+
+## Características
+
+### Categorías de Noticias
+
+- Eventos ambientales
+- Estudios y reportes
+- Actividades del EPA
+- Alertas ambientales
+- Logros y reconocimientos
+
+### Estructura de Noticia
+
+```typescript
+interface News {
+  id: string;
+  title: string;
+  category: string;
+  img_url?: string;
+  content: string;
+  created_at: string;
+  author?: string;
+  tags?: string[];
+}
+```
+
+### Vista de Listado
+
+- Grid responsivo de tarjetas de noticias
+- Imagen destacada
+- Título y extracto
+- Categoría y fecha
+- Link a vista detallada
+
+### Vista Detallada
+
+**Ruta:** `/news/[id]`
+
+- Título completo
+- Imagen principal
+- Contenido completo de la noticia
+- Metadata (autor, fecha, categoría)
+- Noticias relacionadas
+
+## Componentes Utilizados
+
+- `NewsCard` - Tarjeta de noticia en listado
+- `NewsFull` - Vista completa de noticia
+- `CategoryBadge` - Etiqueta de categoría
+- `Pagination` - Componente de paginación

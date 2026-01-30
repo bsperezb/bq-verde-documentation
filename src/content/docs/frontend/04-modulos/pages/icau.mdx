@@ -1,0 +1,101 @@
+---
+title: Indicadores ICAU
+description: Documentación del sistema de Indicadores de Calidad Ambiental Urbana.
+---
+
+**Ruta dinámica:** `/ICAU/[categoria]/[slug]`  
+**Archivo:** `src/pages/ICAU/[slug].astro`  
+**Layout:** `LayoutICAU.astro`
+
+## Descripción
+
+Sistema de visualización de los Indicadores de Calidad Ambiental Urbana (ICAU), proporcionando datos históricos, gráficos interactivos y análisis de los diferentes aspectos ambientales de la ciudad.
+
+## Categorías ICAU
+
+### Agua (`/ICAU/agua/*`)
+Indicadores relacionados con la calidad y consumo de agua:
+- Calidad del Agua Superficial
+- Consumo de Agua
+- Otros indicadores hídricos
+
+### Aire (`/ICAU/aire/*`)
+Indicadores de calidad del aire:
+- Calidad del Aire (PM10 y PM2.5)
+- Población Urbana Expuesta a Ruido
+- Tecnologías de Baja Emisión
+
+### Fauna (`/ICAU/fauna/*`)
+Indicadores de biodiversidad animal:
+- Especímenes de la Fauna Silvestre Atendidos
+- Especímenes de la Fauna Silvestre Recuperados
+- Especímenes de la Fauna Silvestre Liberados y Reubicados
+
+### Flora (`/ICAU/flora/*`)
+Indicadores de vegetación urbana y áreas verdes
+
+### Suelo (`/ICAU/suelo/*`)
+Indicadores de calidad y uso del suelo
+
+### RESPEL (`/ICAU/respel/*`)
+Indicadores de Residuos Peligrosos
+
+### Ordenamiento Territorial (`/ICAU/ordenamiento/*`)
+Indicadores urbanísticos y de planificación territorial
+
+## Funcionalidad
+
+- Visualización de datos históricos
+- Gráficos interactivos (líneas, barras, área)
+- Tablas de datos con opción de descarga
+- Metodología del indicador
+- Fuentes de información
+- Descargar datos en formatos Excel/CSV
+
+## Generación de Rutas Dinámicas
+
+```astro
+---
+export async function getStaticPaths() {
+  const icauEntries = await getCollection('icau');
+
+  return icauEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<LayoutICAU>
+  <Content />
+</LayoutICAU>
+```
+
+## Sistema de Contenido
+
+**Ubicación:** `src/content/icau/`
+
+Cada indicador es un archivo Markdown con frontmatter:
+
+```markdown
+---
+title: "Calidad del Aire PM2.5"
+description: "Concentración de material particulado PM2.5 en el aire"
+category: "aire"
+icon: "air-quality"
+publishedDate: 2024-01-15
+---
+
+Contenido del indicador...
+```
+
+## Componentes Utilizados
+
+- `ICAUHeader` - Encabezado con breadcrumbs
+- `DataChart` - Gráficos de datos
+- `DataTable` - Tablas de datos
+- `Methodology` - Sección de metodología
+- `DownloadButton` - Botón de descarga de datos

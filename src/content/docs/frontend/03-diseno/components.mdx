@@ -1,0 +1,118 @@
+---
+title: Componentes
+description: Documentación de los componentes reutilizables.
+---
+
+## Componentes Comunes (`src/components/common/`)
+
+### NavFilters.astro
+
+Filtros de navegación para categorías.
+
+**Props:**
+
+- `options: string[]` - Lista de opciones
+- `active: string` - Opción activa por defecto
+- `id: string` - ID del componente
+
+**Eventos:**
+
+- `filter-change` - Emitido al cambiar filtro
+
+**Uso:**
+
+```astro
+<NavFilters
+  id="category-filters"
+  options={["Fauna", "Flora", "Aire"]}
+  active="Fauna"
+/>
+```
+
+## Componentes de Indicadores (`src/components/ambiental_cards/`)
+
+### IndicatorsCarousel.astro
+
+Carrusel de tarjetas de indicadores ambientales.
+
+**Props:**
+
+- `indicators: Indicator[]` - Lista de indicadores
+
+**Estructura de Indicator:**
+
+```typescript
+interface Indicator {
+  title: string;
+  description: string;
+  category: string;
+  icon: string;
+  slug: string;
+  path: string;
+  isRespelParent?: boolean;
+}
+```
+
+**Características:**
+
+- Navegación con flechas
+- Scroll infinito
+- Transiciones suaves
+- Responsive
+
+## Componentes de Mapas (`src/components/maps/`)
+
+### MapComponent.astro
+
+Componente de mapa interactivo con Leaflet.
+
+**Props:**
+
+- `stations: Station[]` - Estaciones de monitoreo
+- `center: [number, number]` - Centro del mapa
+- `zoom: number` - Nivel de zoom
+
+**Funcionalidad:**
+
+- Inicialización de Leaflet
+- Marcadores personalizados
+- Popups informativos
+- Capas de mapa
+
+## Componentes de Secciones (`src/components/home_sections/`)
+
+### Section.astro
+
+Sección de título y descripción para home.
+
+**Props:**
+
+- `title?: string` - Título de la sección
+- `description?: string` - Descripción
+
+## Componentes de Noticias (`src/components/notice_sections/`)
+
+### NewsCard.astro
+
+Tarjeta de noticia.
+
+**Props:**
+
+```typescript
+interface NewsCardProps {
+  id: string;
+  title: string;
+  category: string;
+  img_url?: string;
+  created_at: string;
+}
+```
+
+## Componentes de Gráficos (`src/components/charts/`)
+
+Componentes para visualización de datos:
+
+- Gráficos de líneas
+- Gráficos de barras
+- Gráficos de área
+- Tablas de datos

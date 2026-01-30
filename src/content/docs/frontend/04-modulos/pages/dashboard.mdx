@@ -1,0 +1,119 @@
+---
+title: Dashboard Administrativo
+description: Documentación del panel de administración.
+---
+
+**Ruta:** `/dashboard`  
+**Archivo:** `src/pages/dashboard/index.astro`  
+**Layout:** `DashboardLayout.astro`  
+**Protección:** Requiere autenticación
+
+## Descripción
+
+Panel administrativo para la gestión de contenidos del Observatorio Ambiental, permitiendo a usuarios autorizados crear, editar y eliminar información.
+
+## Secciones Administrativas
+
+### Gestión de Noticias (`/dashboard/news`)
+
+**Funcionalidades:**
+- Crear nuevas noticias
+- Editar noticias existentes
+- Eliminar noticias
+- Subir imágenes destacadas
+- Categorizar noticias
+- Previsualización antes de publicar
+
+**Campos del formulario:**
+- Título
+- Categoría
+- Contenido (editor de texto enriquecido)
+- Imagen destacada
+- Etiquetas
+- Estado (borrador/publicado)
+
+### Gestión de Documentos (`/dashboard/document`)
+
+**Funcionalidades:**
+- Subir documentos (PDF, Excel, Word)
+- Editar metadatos del documento
+- Eliminar documentos
+- Organizar por categorías
+
+**Metadatos:**
+- Título del documento
+- Categoría
+- Autor
+- Fecha de publicación
+- Descripción
+- Archivo
+
+### Gestión de Estaciones (`/dashboard/stations`)
+
+**Funcionalidades:**
+- CRUD completo de estaciones de monitoreo
+- Configuración de ubicación GPS
+- Asignación de sensores
+- Configuración de parámetros medidos
+- Asignación de indicadores ICAU relacionados
+
+**Campos:**
+- Nombre de la estación
+- Tipo de estación
+- Coordenadas GPS (latitud, longitud)
+- Descripción
+- Sensores activos
+- Estado (activa/inactiva)
+
+### Gestión de Indicadores (`/dashboard/indicators`)
+
+**Funcionalidades:**
+- Gestión de indicadores ICAU
+- Crear y editar subcategorías
+- Gestión de contenido dinámico
+- Configuración de visualización
+
+**Estructura:**
+- Indicador principal (ICAU)
+  - Subcategorías
+    - Contenidos específicos
+
+## Autenticación y Seguridad
+
+### Middleware de Autenticación
+
+```javascript
+// src/middleware.js
+export function onRequest({ locals, request, cookies }, next) {
+  const token = cookies.get("token")?.value;
+  const protectedRoutes = ["/dashboard"];
+
+  if (protectedRoutes.some((route) => request.url.includes(route))) {
+    if (!token) {
+      return Response.redirect(new URL("/login", request.url));
+    }
+  }
+
+  locals.token = token;
+  return next();
+}
+```
+
+### Página de Login (`/login`)
+
+**Archivo:** `src/pages/login.astro`
+
+- Formulario de autenticación
+- Validación de credenciales
+- Generación de token JWT
+- Almacenamiento en cookies
+- Redirección al dashboard
+
+## Componentes del Dashboard
+
+- `Sidebar` - Navegación lateral
+- `DataTable` - Tablas con paginación y ordenamiento
+- `FormEditor` - Formularios de edición
+- `ImageUploader` - Subida de imágenes
+- `FileUploader` - Subida de archivos
+- `ConfirmDialog` - Confirmación de acciones destructivas

@@ -1,0 +1,127 @@
+---
+title: Mejores Prácticas
+description: Estándares de calidad y estrategias de prueba.
+---
+
+## Mejores Prácticas de Desarrollo
+
+### Componentes Reutilizables
+
+1. **Crear componentes genéricos**
+   - Diseñar con reutilización en mente
+   - Evitar dependencias específicas del contexto
+   - Usar props para personalización
+
+2. **Props bien documentados**
+   ```typescript
+   interface Props {
+     /** Título principal del componente */
+     title: string;
+     /** Descripción opcional */
+     description?: string;
+   }
+   ```
+
+3. **Single Responsibility Principle**
+   - Cada componente debe tener una única responsabilidad
+   - Dividir componentes complejos en subcomponentes
+
+### Organización de Archivos
+
+1. **Agrupar por funcionalidad**
+   - Componentes relacionados en la misma carpeta
+   - Separar por tipo (layouts, components, pages)
+
+2. **Nomenclatura consistente**
+   - camelCase para JavaScript/TypeScript
+   - kebab-case para archivos
+   - PascalCase para componentes Astro
+
+3. **Comentarios en código complejo**
+   ```javascript
+   // Breve descripción de qué hace el código
+   // No cómo lo hace (el código debe ser auto-explicativo)
+   ```
+
+### Gestión de Estado
+
+1. **Mantener estado local cuando sea posible**
+   - Evitar estado global innecesario
+   - Usar props para comunicación padre-hijo
+
+2. **Usar eventos para comunicación entre componentes**
+   ```javascript
+   // Componente emisor
+   element.dispatchEvent(new CustomEvent('action', { detail: data }));
+   
+   // Componente receptor
+   element.addEventListener('action', (e) => handleAction(e.detail));
+   ```
+
+### Performance
+
+1. **Lazy loading de componentes pesados**
+   ```astro
+   ---
+   const HeavyComponent = await import('../components/Heavy.astro');
+   ---
+   ```
+
+2. **Minimizar JavaScript en cliente**
+   - Aprovechar SSR de Astro
+   - Usar islands architecture solo cuando necesario
+
+3. **Optimización de imágenes**
+   - Usar formatos modernos (WebP)
+   - Implementar lazy loading
+   - Dimensiones apropiadas
+
+## Testing
+
+### Testing Manual
+
+Navegación completa de la aplicación verificando:
+
+- ✅ Funcionalidad de filtros
+- ✅ Navegación entre páginas
+- ✅ Formularios (validación y envío)
+- ✅ Carga de datos de API
+- ✅ Manejo de errores
+
+### Testing Responsivo
+
+Verificar en diferentes tamaños de pantalla:
+
+- **320px** - Móvil pequeño
+- **768px** - Tablet
+- **1024px** - Laptop
+- **1440px** - Desktop
+
+### Testing de Navegadores
+
+Compatibilidad con:
+
+- ✅ Chrome (últimas 2 versiones)
+- ✅ Firefox (últimas 2 versiones)
+- ✅ Safari (últimas 2 versiones)
+- ✅ Edge (últimas 2 versiones)
+
+## Estilo de Código
+
+### Formateo Consistente
+
+```bash
+npm run format
+```
+
+Ejecutar antes de cada commit para mantener consistencia.
+
+### Convenciones de Nomenclatura
+
+| Tipo | Convención | Ejemplo |
+|------|-----------|---------|
+| Variables/Funciones | camelCase | `getUserData()` |
+| Archivos | kebab-case | `user-profile.astro` |
+| Componentes | PascalCase | `UserProfile.astro` |
+| Constantes | UPPER_SNAKE_CASE | `API_BASE_URL` |
+| CSS Classes | kebab-case | `header-nav` |
