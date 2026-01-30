@@ -20,5 +20,9 @@ A continuación se detallan los entornos del proyecto.
 El proyecto consta de dos entornos:
 
 
-<LinkCard title="Frontend" href="/frontend/01-introduccion/" />
-<LinkCard title="Backend" href="/backend/01-introduccion/" />
+<LinkCard title="Frontend" 
+    href={`${import.meta.env.BASE_URL + '/' || ''}frontend/01-introduccion/`.replace(/\/\//g, '/')} 
+/>
+<LinkCard title="Backend"
+    href={`${import.meta.env.BASE_URL + '/' || ''}backend/01-introduccion/`.replace(/\/\//g, '/')} 
+ />
